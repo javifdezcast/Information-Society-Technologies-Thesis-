@@ -1,0 +1,13 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+functions:
+  reducirimagen:
+    lang: java11
+    handler: ./reducirimagen
+    image: reducirimagen
+spec:
+  imagePullSecrets:
+    name: image-pull-secrets
+

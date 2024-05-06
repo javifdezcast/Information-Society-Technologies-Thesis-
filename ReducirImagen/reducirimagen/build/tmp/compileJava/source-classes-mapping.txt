@@ -1,0 +1,2 @@
+com/openfaas/function/Handler.java
+ com.openfaas.function.Handler

@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\gradle",
+    "\\gradle\\wrapper",
+    "\\src",
+    "\\src\\main",
+    "\\src\\main\\java",
+    "\\src\\main\\java\\com",
+    "\\src\\main\\java\\com\\openfaas",
+    "\\src\\main\\java\\com\\openfaas\\function",
+    "\\src\\test",
+    "\\src\\test\\java"
+  ],
+  "PreviewInSolutionExplorer": false
+}
