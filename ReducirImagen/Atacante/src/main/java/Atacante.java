@@ -8,6 +8,10 @@ public interface Atacante {
     String CONTENT_TYPE = "CONTENT_TYPE";
     String TIMESTAMP = "TIMESTAMP";
     String FILEPATH = "C:\\Users\\jfdez\\OpenFaas\\ReducirImagen\\reducirimagen\\perro23.jpg";
+    String RES_FILEPATH = "C:\\Users\\jfdez\\OpenFaas\\ReducirImagen\\Atacante\\";
 
-    void atacar(int time);
+    String PROCESSING_TIME = "processingTime";
+    String TIME = "time";
+
+    void atacar(int time, String resultFileName);
 }

@@ -6,7 +6,7 @@ functions:
   reducirimagen:
     lang: java11
     handler: ./reducirimagen
-    image: reducirimagen
+    image: javifdezcast/reducirimagen
 spec:
   imagePullSecrets:
     name: image-pull-secrets
