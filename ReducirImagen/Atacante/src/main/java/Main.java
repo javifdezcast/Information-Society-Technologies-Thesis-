@@ -11,31 +11,23 @@ import java.util.concurrent.Executors;
 
 public class Main {
 
-    private static int duracion = 120;
+    private static int duracion = 10;
+    private static int numInstances = 50;
 
     public static void main(String[] args){
-        int numInstances = 20; // Number of instances of AtacanteMasivo
-        int attackDuration = 60; // Duration of the attack in seconds
 
         // Create a thread pool with a fixed number of threads
         ExecutorService executor = Executors.newFixedThreadPool(numInstances);
 
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm");
-        String filename = "Resultados" + now.format(formatter) + ".csv";
-        String fullPath = Paths.get(Atacante.RES_FILEPATH, filename).toString();
-        File resultado = new File(fullPath);
-        try (FileWriter writer = new FileWriter(resultado)) {
-            writer.append("ResponseCode,SendingTime,ReceptionTime,ProcessingTime\n");
-
-        }catch (IOException e){
-
-        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm");
+        String fullPath = Atacante.RES_FILEPATH + "Resultados" + now.format(formatter);
             // Submit tasks to the executor
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < numInstances; i++) {
+            int id = i;
             Callable callable = () -> {
                 Atacante atacante = new AtacanteMasivo();
-                atacante.atacar(duracion, filename);
+                atacante.atacar(id, duracion, fullPath, Atacante.PERRO3);
                 return null;
             };
             executor.submit(callable);
@@ -43,7 +35,7 @@ public class Main {
 
         // Shutdown the executor after the attack duration
         try {
-            Thread.sleep(duracion * 1000); // Convert seconds to milliseconds
+            Thread.sleep(duracion *60 * 1000); // Convert seconds to milliseconds
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
