@@ -20,8 +20,8 @@ public interface Atacante {
     String VICTIM_SENDING_TIME = "sendingTime";
     String TIME = "time";
 
-    void ataqueTemporal(int id, int time, String resultFileName, String imagen);
+    List<Double[]> ataqueTemporal(int time, String imagen);
 
-    List<Double[]> ataqueCuantitativo(int id, int solicitudes, String imagen);
+    List<Double[]> ataqueCuantitativo(int solicitudes, String imagen);
 
 }

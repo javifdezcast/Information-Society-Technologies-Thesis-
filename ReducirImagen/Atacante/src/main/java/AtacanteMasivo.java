@@ -5,12 +5,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Date;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,28 +17,45 @@ import javax.imageio.ImageIO;
 
 public class AtacanteMasivo implements Atacante{
 
+    private int id;
+
     public AtacanteMasivo(){
-        
+        Random r = new Random();
+        this.id = r.nextInt();
     }
 
     @Override
-    public void ataqueTemporal(int id, int time, String resultFileName, String imagen) {
-
-        long futureTimeMillis = System.currentTimeMillis() + (time * 60 * 1000);
-        Date end = new Date(futureTimeMillis);
-
-        Integer hitcount = 0;
-        File resultado = new File(resultFileName + "-" + id + ".csv");
-
-        try (FileWriter writer = new FileWriter(resultado)) {
-            writer.append("ResponseCode,SendingTime,ReceptionTime,ProcessingTime\n");
-            while (new java.util.Date().before(end)) {
-                Double[] res = enviarSolicitud(imagen);
+    public List<Double[]> ataqueTemporal(int time, String imagen) {
+        long futureTimeMillis = System.currentTimeMillis() + (time * 1000);
+        List<Double[]> resultados = new ArrayList<>();
+        System.out.println("Iniciando ataque masivo. Thread: " + this.id + ", duración: " + time + " minutos.");
+        while (System.currentTimeMillis() < futureTimeMillis) {
+            try {
+                resultados.add(enviarSolicitud(imagen));
+            }catch (Exception e){
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
-        System.out.println(hitcount + " requests sent");
+        System.out.println("Fin ataque masivo. Thread: " + this.id + ", solicitudes enviadas: " + time + ".");
+        return resultados;
+    }
+
+
+    @Override
+    public List<Double[]> ataqueCuantitativo(int solicitudes, String imagen){
+        int i = 0;
+        List<Double[]> resultados = new ArrayList<>();
+        System.out.println("Iniciando ataque cuantitativo. Thread: " + this.id + ", numero de solicitudes: " + solicitudes + " minutos.");
+        while (i < solicitudes) {
+            try {
+                i++;
+                resultados.add(enviarSolicitud(imagen));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        System.out.println("Fin ataque masivo. Thread: " + this.id);
+        return resultados;
     }
 
     private static Double[] enviarSolicitud(String imagen) throws IOException {
@@ -99,25 +113,5 @@ public class AtacanteMasivo implements Atacante{
         con.setRequestProperty(Atacante.IMAGE_HEIGHT, String.valueOf(image.getHeight()));
         con.setRequestProperty(Atacante.CONTENT_TYPE, "application/json");
         return con;
-    }
-
-    @Override
-    public List<Double[]> ataqueCuantitativo(int id, int solicitudes, String imagen){
-        int i = 0;
-        List<Double[]> results = new ArrayList<>();
-        try {
-            while(i<solicitudes){
-                Double[] resultados = enviarSolicitud(imagen);
-                System.out.println("\t");
-                for(int j = 0; j < resultados.length ; j++){
-                    System.out.print(resultados[j] + ", ");
-                }
-                results.add(resultados);
-                i++;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return results;
     }
 }

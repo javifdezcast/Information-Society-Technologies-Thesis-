@@ -3,33 +3,90 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.*;
 
 public class Main {
 
     private static int duracion = 10;
-    private static int numInstances = 50;
+    private static int numInstances = 3;
     private static int numSolicitudes = 310;
     private static String[] variableNames = {"ResponseCode","AttackerSendingTime","VictimReceptionTime","VictimSendingTime","AttackerReceptionTime","ProcessingTime"};
     private static int tamanios = 10;
 
     public static void main(String[] args){
-        Atacante atacante = new AtacanteMasivo();
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm");
-        String fullPath = Atacante.RES_FILEPATH + "Resultados" + now.format(formatter) + ".csv";
         Map<String, Map<String, Map<String, List<Double>>>> formatos = getResultDataStruct();
         try{
-            for(int i = 0 ; i<tamanios ; i++){
+            for(int i = 0 ; i<2 ; i++){
                 for(int j = 0 ; j < 2 ; j++){
-                    storeData(formatos, i, j, atacante.ataqueCuantitativo(0, numSolicitudes,
-                            Atacante.IMAGE_PREFIX + i + Atacante.IMAGE_SUFFIX[j]));
+                    String fullPath = Atacante.RES_FILEPATH + "Resultados" + now.format(formatter) +
+                            Atacante.IMAGE_PREFIX + i + Atacante.IMAGE_SUFFIX[j] + ".csv";
                     System.out.println("Tamanio " + i + " formato " + Atacante.IMAGE_SUFFIX[j]);
+                    ataqueMasivo(Atacante.IMAGE_PREFIX + i + Atacante.IMAGE_SUFFIX[j], fullPath);
                 }
             }
         }catch (Exception e){
             e.printStackTrace();
         }
-        saveResultsToFile(fullPath, formatos);
+    }
+
+    private static void ataqueMasivo(String imagen, String fullPath) throws ExecutionException, InterruptedException {
+        // Create a thread pool with a fixed number of threads
+        ExecutorService executor = Executors.newFixedThreadPool(numInstances);
+
+        // List to store the Future results
+        List<Future<List<Double[]>>> futures = new ArrayList<>();
+
+        // Submit tasks to the executor
+        for (int i = 0; i < numInstances; i++) {
+            Future<List<Double[]>> future = executor.submit(new Callable<List<Double[]>>() {
+                @Override
+                public List<Double[]> call() {
+                    AtacanteMasivo atacante = new AtacanteMasivo();
+                    return atacante.ataqueTemporal(duracion, imagen);
+                }
+            });
+            futures.add(future);
+        }
+
+        // Map to store results from all threads
+        Map<Integer, List<Double[]>> results = new HashMap<>();
+
+        // Collect the results from all futures
+        for (int i = 0; i < futures.size(); i++) {
+            List<Double[]> result = futures.get(i).get();
+            results.put(i, result); // Store each result by thread id
+        }
+
+        // Shutdown the executor after the attack duration
+        executor.shutdown();
+
+        // Save the results to file after execution
+        saveTemporalResultsToFile(fullPath, results);
+    }
+
+    private static void saveTemporalResultsToFile(String fullPath, Map<Integer, List<Double[]>> results) {
+        try (FileWriter writer = new FileWriter(fullPath, true)) {
+            for (Map.Entry<Integer, List<Double[]>> entry : results.entrySet()) {
+                int threadId = entry.getKey();
+                List<Double[]> data = entry.getValue();
+
+                writer.append("Thread ").append(String.valueOf(threadId)).append("\n");
+
+                for (Double[] row : data) {
+                    for (int i = 0; i < row.length; i++) {
+                        writer.append(String.valueOf(row[i]));
+                        if (i != row.length - 1) {
+                            writer.append(",");
+                        }
+                    }
+                    writer.append("\n");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void saveResultsToFile(String fullPath, Map<String, Map<String, Map<String, List<Double>>>> formatos) {
@@ -91,27 +148,4 @@ public class Main {
             }
         }
     }
-
-/*
-// Create a thread pool with a fixed number of threads
-ExecutorService executor = Executors.newFixedThreadPool(numInstances);
-    // Submit tasks to the executor
-        for (int i = 0; i < numInstances; i++) {
-        int id = i;
-        Callable callable = () -> {
-            Atacante atacante = new AtacanteMasivo();
-            atacante.atacar(id, duracion, fullPath, Atacante.PERRO3);
-            return null;
-        };
-        executor.submit(callable);
-    }
-    // Shutdown the executor after the attack duration
-        try {
-        Thread.sleep(duracion *60 * 1000); // Convert seconds to milliseconds
-    } catch (InterruptedException e) {
-        e.printStackTrace();
-    } finally {
-        executor.shutdown();
-    }
- */
 }
