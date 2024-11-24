@@ -1,0 +1,16 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://192.168.1.43:8080
+functions:
+  reducirimagen:
+    lang: java11
+    handler: ./reducirimagen
+    image: javifdezcast/reducirimagen
+    labels:
+      com.openfaas.scale.max: 13
+spec:
+  imagePullSecrets:
+    name: image-pull-secrets
+  environment:
+    exec_timeout: "60s"

@@ -1,0 +1,11 @@
+- job_name: 'federation-from-openfaas-prometheus'
+  scrape_interval: 1s
+  honor_labels: true
+  metrics_path: '/federate'
+  params:
+    'match[]':
+      - '{job="prometheus"}'
+      - '{job="openfaas-pods"}'
+  static_configs:
+    - targets:
+      - 'prometheus.openfaas.svc.cluster.local:9090'
