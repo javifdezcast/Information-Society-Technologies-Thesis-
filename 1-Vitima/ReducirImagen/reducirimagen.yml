@@ -1,7 +1,7 @@
 version: 1.0
 provider:
   name: openfaas
-  gateway: http://192.168.1.43:8080
+  gateway: http://192.168.1.35:8080
 functions:
   reducirimagen:
     lang: java11
