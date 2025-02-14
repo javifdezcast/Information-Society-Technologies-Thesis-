@@ -1,44 +1,90 @@
 import java.io.*;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Main {
-    private static final String COMMA_DELIMITER = ";";
-    private static final String FICHERO_DATOS = "fichero1";
-    private static final String FICHERO_TIEMPOS = "fichero2";
-    private static final String FICHERO_SALIDA = "fichero3";
+    private static final String COMMA_DELIMITER = ",";
+
+    private static final String FICHERO_DATOS = "Consumo Memoria-data-as-joinbyfield-2025-01-31 18_18_29.csv";
+    private static final String FICHERO_TIEMPOS = "Resultados2025-01-29-20-04.csv";
+    private static final String FICHERO_SALIDA = "Consumo Memoria procesado.csv";
+    private static final String CARPETA = "C:\\Users\\jfdez\\Information-Society-Technologies-Thesis-\\" +
+            "3-Documentos\\Experimentos\\Experimento2.2\\";
 
 
 
     public static void main(String[] args) {
         // Parsear datos
         List<List<String>> datos = parseFile();
+
+        List<List<String>> igualados = igualaDatos(datos);
         // Reordenar Columnas
-        List<List<String>> ordenados = ordenaDatos(datos);
-        // Agrupar por valores
-        Map<Integer, Map<String, Map<Integer, Map<Integer, Map<Integer, Double>>>>> agrupados = agrupaDatos(ordenados);
-        // Escribir datos
-        exportarDatos(agrupados);
+        List<List<String>> ordenados = ordenaDatos(igualados);
+
+        List<List<String>> completados = completaDatos(ordenados);
+        imprimirDatos(completados, "Consumo Memoria ordenado.csv");
     }
 
-    private static void exportarDatos(Map<Integer, Map<String, Map<Integer, Map<Integer, Map<Integer, Double>>>>> agrupados) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FICHERO_SALIDA))) {
-            // Writing CSV Header
-            writer.write("Tamaño,Formato,Tiempo,Iteración,Replica,Valor\n");
+    private static List<List<String>> completaDatos(List<List<String>> ordenados) {
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LinkedList<List<String>> completados = new LinkedList<>();
+        TemporalUnit segundos = ChronoUnit.SECONDS;
+        for(int i = 1; i < ordenados.size() - 1 ; i++) {
+            completados.addLast(ordenados.get(i));
+            LocalDateTime actual = LocalDateTime.parse(ordenados.get(i).get(0), formato);
+            LocalDateTime siguiente = LocalDateTime.parse(ordenados.get(i+1).get(0), formato);
+            if(!siguiente.isEqual(actual.plus(30, segundos))){
+                List<String> nuevo = new ArrayList<>();
+                nuevo.add(formato.format(actual.plus(30, segundos)));
+                for(int j = 1; j < ordenados.get(i).size(); j++) {
+                    nuevo.add("");
+                }
+                completados.addLast(nuevo);
+            }
 
+        }
+        completados.addLast(ordenados.get(ordenados.size()-1));
+        return completados;
+    }
+
+    private static List<List<String>> igualaDatos(List<List<String>> datos) {
+        int longitudMaxima = 0;
+        for (List<String> dato : datos) {
+            if (dato.size() > longitudMaxima) {
+                longitudMaxima = dato.size();
+            }
+        }
+        for(List<String> dato : datos) {
+            if (dato.size() < longitudMaxima) {
+                int longitud = dato.size();
+                for(int i = longitud; i < longitudMaxima; i++) {
+                    dato.add("");
+                }
+            }
+        }
+        return datos;
+    }
+
+    private static void exportarDatos(Map<Integer, Map<String, Map<Integer, Map<Integer, Map<Integer, String>>>>> agrupados) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CARPETA + FICHERO_SALIDA))) {
+            // Writing CSV Header
             for (int tamanio : agrupados.keySet()) {
                 for (String formato : agrupados.get(tamanio).keySet()) {
                     for (int tiempo : agrupados.get(tamanio).get(formato).keySet()) {
+                        writer.write(tamanio + "," + formato + "," + tiempo + ",");
                         for (int iteracion : agrupados.get(tamanio).get(formato).get(tiempo).keySet()) {
                             for (int replica : agrupados.get(tamanio).get(formato).get(tiempo).get(iteracion).keySet()) {
-                                double valor = agrupados.get(tamanio).get(formato).get(tiempo).get(iteracion).get(replica);
-                                writer.write(tamanio + "," + formato + "," + tiempo + "," + iteracion + "," + replica + "," + valor + "\n");
+                                String redondeado = agrupados.get(tamanio).get(formato).get(tiempo).get(iteracion).get(replica);
+                                writer.write("I" + iteracion + "R" + replica + "," + redondeado+ ",");
                             }
                         }
+                        writer.write("\n");
                     }
                 }
             }
@@ -49,55 +95,10 @@ public class Main {
         }
     }
 
-    private static Map agrupaDatos(List<List<String>> ordenados){
-        EstructuraDatosRecopilados datos = new EstructuraDatosRecopilados(ordenados);
-        List<List<Object>> triosTFS = obtenerTrios();
-        int[] iteraciones = {0,0,0,0,0,0};
-        Map<Integer, Map<String, Map<Integer, Map<Integer, Map<Integer, Double>>>>> agregados = new HashMap<>();
-        for(int i = 0 ; i < triosTFS.size() ; i++) {
-            List<Object> trio = triosTFS.get(i);
-            Integer size = Integer.parseInt(String.valueOf(trio.get(1)));
-            String format = String.valueOf(trio.get(2));
-            if(!agregados.containsKey(size)){
-                Map<String, Map<Integer, Map<Integer, Map<Integer, Double>>>> formatMap = new HashMap<>();
-                agregados.put(size, formatMap);
-            }else{
-                iteraciones[size]++;
-            }
-            if(!agregados.get(size).containsKey(format)){
-                Map<Integer, Map<Integer, Map<Integer, Double>>> timeMap = new HashMap<>();
-                agregados.get(size).put(format, timeMap);
-            }
-            for(int j = 0 ; j< 16 ; j++){
-                if(!agregados.get(size).get(format).containsKey(j)){
-                    Map<Integer, Map<Integer, Double>> iterationMap = new HashMap<>();
-                    agregados.get(size).get(format).put(j, iterationMap);
-                }
-                if(!agregados.get(size).get(format).get(j).containsKey(iteraciones[size])){
-                    Map<Integer, Double> replicaMap = new HashMap<>();
-                    agregados.get(size).get(format).get(j).put(iteraciones[size], replicaMap);
-                }
-                for(int k = 0 ; k < 5 ;k++){
-                    String valorString = ordenados.get(i*16+j).get(k);
-                    if(!valorString.isBlank()){
-                        Double valor = Double.parseDouble(valorString);
-                        if(!agregados.get(size).get(format).get(iteraciones[0]).containsKey(j)){
-                            Map<Integer, Double> timeMap = new HashMap<>();
-                            agregados.get(size).get(format).get(iteraciones[0]).put(j, timeMap);
-                        }
-                        agregados.get(size).get(format).get(iteraciones[0]).get(j).put(k, valor);
-                    }
-
-                }
-            }
-        }
-
-        return agregados;
-    }
 
     private static List<List<Object>> obtenerTrios() {
         List<List<Object>> records = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(FICHERO_TIEMPOS))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(CARPETA + FICHERO_TIEMPOS))) {
             String line;
             while ((line = br.readLine()) != null) {
                 extraeDatosDeLinea(line, records);
@@ -134,7 +135,7 @@ public class Main {
         LocalTime time = LocalTime.parse(timeStr);
         List<Object> record = new ArrayList<>();
         record.add(time);
-        record.add(Integer.parseInt(size));
+        record.add(Integer.parseInt(size.stripTrailing()));
         record.add(format);
         records.add(record);
     }
@@ -143,7 +144,7 @@ public class Main {
         List<List<String>> ordenados = new ArrayList<>();
         int columna = 0;
         for(int i = 0; i < datos.size(); i++) {
-            ordenados.add(new ArrayList<>());
+            ordenados.add(new LinkedList<>());
             ordenados.get(i).add(datos.get(i).get(0));
             columna++;
         }
@@ -151,9 +152,18 @@ public class Main {
             for (int j = 1; j < datos.get(0).size(); j++) {
                 if(!datos.get(i).get(j).isEmpty()) {
                     for(int k = 0; k < datos.size(); k++) {
-                        ordenados.get(k).add(datos.get(k).get(j));
-                        datos.get(k).remove(j);
+                        String dato;
+                        try{
+                            dato = datos.get(k).get(j);
+                        } catch (Exception e) {
+                            dato = "";
+                        }
+                        ordenados.get(k).add(dato);
+                        if(datos.get(k).size() >= j){
+                            datos.get(k).remove(j);
+                        }
                     }
+                    columna++;
                 }
             }
         }
@@ -161,12 +171,13 @@ public class Main {
     }
 
     private static List<List<String>> parseFile() {
-        List<List<String>> records = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(FICHERO_DATOS))) {
+        List<List<String>> records = new LinkedList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(CARPETA + FICHERO_DATOS))) {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(COMMA_DELIMITER);
-                records.add(Arrays.asList(values));
+                LinkedList<String> datos = new LinkedList<>(Arrays.asList(values));
+                records.add(datos);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -174,4 +185,26 @@ public class Main {
         return records;
     }
 
+    public static void imprimirDatos(List<List<String>> datos, String fichero){
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CARPETA + fichero))) {
+            for (int i = 0; i < datos.get(0).size(); i++) {
+                writer.write(datos.get(0).get(i) + ",");
+            }
+            writer.write("\n");
+            for (int i = 1; i < datos.size(); i++) {
+                writer.write(datos.get(i).get(0) + ",");
+                for (int j = 1; j < datos.get(i).size(); j++) {
+                    if(!datos.get(i).get(j).isBlank()){
+                        writer.write(datos.get(i).get(j) + ",");
+                    }else {
+                        writer.write(datos.get(i).get(j) + ",");
+                    }
+                }
+                writer.write("\n");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
 }

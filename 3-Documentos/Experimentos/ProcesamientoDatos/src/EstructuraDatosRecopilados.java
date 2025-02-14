@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ public class EstructuraDatosRecopilados {
         cabeceras = datos.get(0);
         tiempos = new ArrayList<>();
         for(int i=1;i<datos.size();i++) {
-            tiempos.add(LocalDateTime.parse(datos.get(i).get(0)));
+            tiempos.add(parsea(datos.get(i).get(0)));
         }
         this.datos = new Long[tiempos.size()][cabeceras.size()-1];
         for(int i=1;i<datos.size();i++) {
@@ -23,5 +24,10 @@ public class EstructuraDatosRecopilados {
                 }
             }
         }
+    }
+
+    public LocalDateTime parsea(String fecha) {
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(fecha, formato);
     }
 }
