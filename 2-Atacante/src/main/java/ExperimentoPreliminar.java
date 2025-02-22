@@ -27,7 +27,6 @@ public class ExperimentoPreliminar implements Experimento{
     @Override
     public void ejecutar(FileWriter fw) throws IOException, ExecutionException, InterruptedException {
         this.performIterations(fw);
-
     }
 
     /**
@@ -82,7 +81,7 @@ public class ExperimentoPreliminar implements Experimento{
     private void executeAttack(int size, String format, String iteration, int instances, long startTime, long endTime)
             throws ExecutionException, InterruptedException {
         ExecutorService executor = Executors.newFixedThreadPool(instances);
-        List<Future<List<Double[]>>> futures = submitAttackTasks(executor, size, format, iteration, instances, startTime, endTime);
+        List<Future<List<String[]>>> futures = submitAttackTasks(executor, size, format, iteration, instances, startTime, endTime);
         executor.shutdown();
         //saveResultsToFile(filePath, results);
     }
@@ -90,10 +89,10 @@ public class ExperimentoPreliminar implements Experimento{
     /**
      * Submits attack tasks to the executor and returns a list of futures.
      */
-    private List<Future<List<Double[]>>> submitAttackTasks(ExecutorService executor, int size, String format, String iteration, int instances, long startTime, long endTime) {
-        List<Future<List<Double[]>>> futures = new ArrayList<>();
+    private List<Future<List<String[]>>> submitAttackTasks(ExecutorService executor, int size, String format, String iteration, int instances, long startTime, long endTime) {
+        List<Future<List<String[]>>> futures = new ArrayList<>();
         for (int i = 0; i < instances; i++) {
-            futures.add(executor.submit(() -> new AtacanteMasivo().ataqueTemporal(startTime, endTime, String.valueOf(size), format, iteration)));
+            futures.add(executor.submit(() -> new AtacanteMasivoTemporal(String.valueOf(size), format, startTime, endTime, iteration).atacar()));
         }
         return futures;
     }

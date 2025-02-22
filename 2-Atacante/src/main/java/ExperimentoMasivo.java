@@ -14,31 +14,32 @@ public class ExperimentoMasivo implements Experimento {
     private final int time;
     private final String format;
     private final int size;
-    private final int replicas;
+    private final int iteraciones;
 
-    public ExperimentoMasivo(int time, String format, int size, int replicas) {
+    public ExperimentoMasivo(int time, String format, int size, int iteraciones) {
         this.time = time;
         this.format = format;
         this.size = size;
-        this.replicas = replicas;
+        this.iteraciones = iteraciones;
     }
 
 
     @Override
     public void ejecutar(FileWriter writer)
             throws IOException, InterruptedException, ExecutionException {
-        DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+        for (int i = 0; i < iteraciones; i++) {
+            DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-        long startTime = calculateRoundedStartTime();
-        long endTime = startTime + this.time;
+            long startTime = calculateRoundedStartTime();
+            long endTime = startTime + this.time;
 
-        LocalDateTime actualStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(startTime), TimeZone
-                .getDefault().toZoneId());
-        writer.append("Size ").append(String.valueOf(size)).append(" format ")
-                .append(format).append(" ").append(actualStart.format(formatterTime)).append("\n").flush();
-
-        executeAttack(startTime, endTime);
-        Thread.sleep((long) time); // Pause between attacks
+            LocalDateTime actualStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(startTime), TimeZone
+                    .getDefault().toZoneId());
+            writer.append("Size ").append(String.valueOf(size)).append(" format ")
+                    .append(format).append(" ").append(actualStart.format(formatterTime)).append("\n").flush();
+            executeAttack(startTime, endTime, i);
+        }
+        Thread.sleep(time); // Pause between attacks
     }
 
     /**
@@ -53,18 +54,18 @@ public class ExperimentoMasivo implements Experimento {
    /**
     *  Executes an attack using a thread pool and collects results.
     */
-    private void executeAttack(long startTime, long endTime)
+    private void executeAttack(long startTime, long endTime, int iteracion)
             throws ExecutionException, InterruptedException {
-        ExecutorService executor = Executors.newFixedThreadPool(replicas);
-        submitAttackTasks(executor, startTime, endTime);
+        ExecutorService executor = Executors.newFixedThreadPool(iteraciones);
+        submitAttackTasks(executor, startTime, endTime, iteracion);
         executor.shutdown();
 
     }
 
-    private void submitAttackTasks(ExecutorService executor, long startTime, long endTime) {
-        for (int i = 0; i < replicas; i++) {
-            executor.submit(() -> new AtacanteMasivo().ataqueTemporal(startTime, endTime, String.valueOf(size), format,
-                    "0"));
+    private void submitAttackTasks(ExecutorService executor, long startTime, long endTime, int iteracion) {
+        for (int i = 0; i < Constantes.INSTANCE_COUNTS[size]; i++) {
+            executor.submit(() -> new AtacanteMasivoTemporal(String.valueOf(size), format, startTime, endTime,
+                    String.valueOf(iteracion)).atacar());
         }
     }
 }

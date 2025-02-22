@@ -40,6 +40,6 @@ public class Constantes {
     /**
      * Constantes experimento 1: ataque masivo
      */
-    public static int DURATION_2 = 2 * 60 * 60 * 1000; // 3 minutes in milliseconds
+    public static int DURATION_2 = 15 * 60 * 1000; // 3 minutes in milliseconds
 
 }
