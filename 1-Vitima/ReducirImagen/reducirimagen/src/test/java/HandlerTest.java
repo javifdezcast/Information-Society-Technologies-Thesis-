@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.openfaas.model.IRequest;
 import com.openfaas.model.IResponse;
 import com.openfaas.model.Request;
+import org.apache.commons.math3.analysis.function.Constant;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -44,7 +45,7 @@ public class HandlerTest {
     public void reduceImagenGrande(){
         try {
             //Lectura y transformacvión de imagen a byte[]
-            byte[] byteImage = Files.readAllBytes(Paths.get("C:\\Users\\jfdez\\OpenFaas\\ReducirImagen\\reducirimagen\\perro23.jpg"));
+            byte[] byteImage = Files.readAllBytes(Paths.get("C:\\Users\\jfdez\\Information-Society-Technologies-Thesis-\\1-Vitima\\ReducirImagen\\reducirimagen\\perro23.jpg"));
             //Creación de los campos de la cabecera
             HashMap<String, String> headers = new HashMap<>();
             headers.put(IMAGE_FORMAT, "jpg");
@@ -79,7 +80,7 @@ public class HandlerTest {
             frame.setVisible(true);
             Thread.sleep(100000);
 
-            String originalImagePath = "C:\\Users\\jfdez\\OpenFaas\\ReducirImagen\\reducirimagen\\perro23.jpg";
+            String originalImagePath = "C:\\Users\\jfdez\\Information-Society-Technologies-Thesis-\\1-Vitima\\ReducirImagen\\reducirimagen\\perro23.jpg";
             String processedImagePath = originalImagePath.replace("23.jpg", "Procesada.jpg");
 
             try {

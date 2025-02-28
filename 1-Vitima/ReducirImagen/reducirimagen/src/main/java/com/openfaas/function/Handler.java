@@ -22,6 +22,7 @@ public class Handler extends com.openfaas.model.AbstractHandler {
     }
 
     public IResponse Handle(IRequest req) {
+        req.getQuery().keySet().forEach(key -> {System.out.println(key);});
         long inicio = System.currentTimeMillis();
         IResponse res = new Response();
 

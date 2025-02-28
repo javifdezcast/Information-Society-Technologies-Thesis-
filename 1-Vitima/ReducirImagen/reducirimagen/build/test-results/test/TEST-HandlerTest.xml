@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="HandlerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2024-03-02T19:28:23" hostname="LAPTOP-6VJ3VVV1" time="614.194">
+<testsuite name="HandlerTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2025-02-24T11:13:28" hostname="PORTATILDEJAVI" time="32.375">
   <properties/>
-  <testcase name="reduceImagenGrande" classname="HandlerTest" time="614.194"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[java.net.ConnectException: Connection refused: connect
-	at java.base/java.net.PlainSocketImpl.connect0(Native Method)
-	at java.base/java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:101)
-	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:412)
-	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:255)
-	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:237)
-	at java.base/java.net.Socket.connect(Socket.java:608)
-	at java.base/java.net.Socket.connect(Socket.java:557)
-	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:182)
-	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:508)
-	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:603)
-	at java.base/sun.net.www.http.HttpClient.parseHTTPHeader(HttpClient.java:893)
-	at java.base/sun.net.www.http.HttpClient.parseHTTP(HttpClient.java:723)
-	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream0(HttpURLConnection.java:1615)
-	at java.base/sun.net.www.protocol.http.HttpURLConnection.getInputStream(HttpURLConnection.java:1520)
-	at java.base/java.net.HttpURLConnection.getResponseCode(HttpURLConnection.java:527)
-	at HandlerTest.reduceImagenGrande(HandlerTest.java:70)
+  <testcase name="reduceImagenGrande" classname="HandlerTest" time="32.375">
+    <failure message="java.lang.NullPointerException" type="java.lang.NullPointerException">java.lang.NullPointerException
+	at com.openfaas.function.Handler.Handle(Handler.java:25)
+	at HandlerTest.reduceImagenGrande(HandlerTest.java:64)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -66,6 +51,9 @@
 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
 	at org.gradle.internal.concurrent.ThreadFactoryImpl$ManagedThreadRunnable.run(ThreadFactoryImpl.java:56)
-	at java.base/java.lang.Thread.run(Thread.java:834)
-]]></system-err>
+	at java.base/java.lang.Thread.run(Thread.java:829)
+</failure>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
 </testsuite>
