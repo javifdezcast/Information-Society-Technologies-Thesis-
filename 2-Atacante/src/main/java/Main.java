@@ -25,7 +25,7 @@ public class Main {
     private static String generateFilePath() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm");
-        return Constantes.RES_FILEPATH + "Resultados" + now.format(formatter) + ".csv";
+        return Constantes.RES_MASSIVO_FILEPATH + "Resultados" + now.format(formatter) + ".csv";
     }
 
 }

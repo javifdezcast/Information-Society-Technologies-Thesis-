@@ -3,7 +3,8 @@ public class Constantes {
     /**
      * Constantes de conexión
      */
-    public static String URL = "http://192.168.1.34:8080/function/reducirimagen";
+    public static String URL_FUNCION = "http://192.168.1.41:8080/function/reducirimagen";
+    public static String URL_FIREWALL = "http://192.168.1.41:5000/unblock";
 
     /**
      * Constantes de solicitudes http
@@ -11,7 +12,9 @@ public class Constantes {
     public static String IMAGE_FORMAT = "IMAGE_FORMAT";
     public static String IMAGE_SIZE = "IMAGE_SIZE";
     public static String IMAGE_HEIGHT = "IMAGE_HEIGHT";
-    public static String IMAGE_WIDTH = "IMAGE_WIDTH";
+    public static String IMAGE_WIDTH = "IMAGE_WIDTH" +
+            "" +
+            "";
     public static String CONTENT_TYPE = "CONTENT_TYPE";
     public static String TIME = "time";
 
@@ -41,5 +44,6 @@ public class Constantes {
      * Constantes experimento 1: ataque masivo
      */
     public static int DURATION_2 = 15 * 60 * 1000; // 3 minutes in milliseconds
+    public static String RES_MASSIVO_FILEPATH = "C:\\Users\\jfdez\\Information-Society-Technologies-Thesis-\\3-Documentos\\Experimentos\\Experimento 3 Ataque Masivo\\";
 
 }

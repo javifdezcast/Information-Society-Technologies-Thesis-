@@ -1,0 +1,30 @@
+# Simple REST API in PowerShell
+$listener = New-Object System.Net.HttpListener
+$listener.Prefixes.Add("http://+:8089/")
+$listener.Start()
+
+Write-Host "Listening for requests on http://localhost:8089"
+
+while ($true) {
+    $context = $listener.GetContext()
+    $request = $context.Request
+    $response = $context.Response
+
+    if ($request.HttpMethod -eq "POST") {
+        $body = New-Object System.IO.StreamReader $request.InputStream
+        $data = $body.ReadToEnd() | ConvertFrom-Json
+
+        $BannedIP = $data.BannedIP
+        if ($BannedIP -match '^((25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9][0-9]?)$') {
+            # Invoke the firewall rule script
+            Invoke-Expression -Command "& .\BlockIPPort8080.ps1 -BannedIP $BannedIP"
+            $response.StatusCode = 200
+            $response.OutputStream.Write([System.Text.Encoding]::UTF8.GetBytes("Blocked IP $BannedIP"))
+        } else {
+            $response.StatusCode = 400
+            $response.OutputStream.Write([System.Text.Encoding]::UTF8.GetBytes("Invalid IP address"))
+        }
+    }
+
+    $response.Close()
+}

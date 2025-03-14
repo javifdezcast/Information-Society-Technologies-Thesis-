@@ -19,13 +19,14 @@ public class ClienteHTTP implements Cliente {
     private BufferedImage image;
     private byte[] byteImage;
     private ObjectMapper mapper;
+    private String imagen;
 
     public ClienteHTTP(String imagen) {
         try {
-            byteImage = Files.readAllBytes(Paths.get(imagen));
-            image = ImageIO.read(new File(imagen));
-            conexion = setUpConettion(imagen, byteImage, image);
-            mapper = new ObjectMapper();
+            this.byteImage = Files.readAllBytes(Paths.get(imagen));
+            this.image = ImageIO.read(new File(imagen));
+            this.mapper = new ObjectMapper();
+            this.imagen = imagen;
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -33,10 +34,18 @@ public class ClienteHTTP implements Cliente {
 
     @Override
     public String[] solicitudRespuesta() throws IOException {
-        Long inicio = enviarSolicitud();
-        String[] resultado = procesarRespuesta();
-        String[] result = {resultado[0], String.valueOf(inicio),
-                resultado[1],  resultado[2]};
+        String[] result = {"","","",""};
+        try{
+            this.setUpConection(Constantes.URL_FUNCION, "POST");
+            Long inicio = enviarSolicitud();
+            String[] resultado = procesarRespuesta();
+            result[0] = resultado[0];
+            result[1] = String.valueOf(inicio);
+            result[2] = resultado[1];
+            result[3] = resultado[2];
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return result;
     }
 
@@ -69,11 +78,8 @@ public class ClienteHTTP implements Cliente {
         return new String[]{String.valueOf(responseCode), String.valueOf(fin), processingTime};
     }
 
-    private HttpURLConnection setUpConettion(String imagen, byte[] byteImage, BufferedImage image) throws IOException {
-        java.net.URL url = new URL(Constantes.URL);
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("POST");
-        con.setDoOutput(true);
+    private void setUpConection(String url, String method) throws IOException {
+        HttpURLConnection con = createConnection(url, method);
         con.setRequestProperty(Constantes.IMAGE_FORMAT, Files.probeContentType(Paths.get(imagen)));
         con.setRequestProperty(Constantes.IMAGE_SIZE, String.valueOf(byteImage.length));
         con.setRequestProperty(Constantes.IMAGE_WIDTH, String.valueOf(image.getWidth()));
@@ -81,6 +87,29 @@ public class ClienteHTTP implements Cliente {
         con.setRequestProperty(Constantes.CONTENT_TYPE, "application/json");
         con.setConnectTimeout(180*1000);
         con.setReadTimeout(180*1000);
+        this.conexion = con;
+    }
+
+    private static HttpURLConnection createConnection(String url, String method) throws IOException {
+        URL urlObject = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) urlObject.openConnection();
+        con.setRequestMethod(method);
+        con.setDoOutput(true);
         return con;
+    }
+
+    @Override
+    public void unblockFirewall() throws IOException {
+        HttpURLConnection con = createConnection(Constantes.URL_FIREWALL, "POST");
+
+        try (OutputStream stream = con.getOutputStream()) {
+            stream.write(new byte[0]);
+            stream.flush();
+        }
+
+        int responseCode = con.getResponseCode();
+        if (responseCode != HttpURLConnection.HTTP_OK) {
+            throw new IOException("Failed to unblock firewall: " + responseCode);
+        }
     }
 }

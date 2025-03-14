@@ -28,18 +28,18 @@ public class ExperimentoMasivo implements Experimento {
     public void ejecutar(FileWriter writer)
             throws IOException, InterruptedException, ExecutionException {
         for (int i = 0; i < iteraciones; i++) {
-            DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+            DateTimeFormatter formatterTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
             long startTime = calculateRoundedStartTime();
             long endTime = startTime + this.time;
 
             LocalDateTime actualStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(startTime), TimeZone
                     .getDefault().toZoneId());
-            writer.append("Size ").append(String.valueOf(size)).append(" format ")
-                    .append(format).append(" ").append(actualStart.format(formatterTime)).append("\n").flush();
+            writer.append(String.valueOf(size)).append(";")
+                    .append(format).append(";").append(actualStart.format(formatterTime)).append("\n").flush();
             executeAttack(startTime, endTime, i);
+            Thread.sleep(time);
         }
-        Thread.sleep(time); // Pause between attacks
     }
 
     /**
