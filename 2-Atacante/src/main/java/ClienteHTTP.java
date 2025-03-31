@@ -43,7 +43,7 @@ public class ClienteHTTP implements Cliente {
             result[1] = String.valueOf(inicio);
             result[2] = resultado[1];
             result[3] = resultado[2];
-        }catch(Exception e){
+        }catch(IOException e){
             e.printStackTrace();
         }
         return result;
@@ -61,20 +61,22 @@ public class ClienteHTTP implements Cliente {
 
     private String[] procesarRespuesta() throws IOException {
         int responseCode = 0;
+        Long fin = System.currentTimeMillis();
+        String processingTime = "";
         try {
             responseCode = conexion.getResponseCode();
+            fin = System.currentTimeMillis();
+            if(responseCode==200){
+                InputStream input = conexion.getInputStream();
+                String responseBody = new String(input.readAllBytes(), StandardCharsets.UTF_8);
+                input.close();
+                JsonNode jsonResponse = mapper.readTree(responseBody);
+                processingTime = jsonResponse.get(Constantes.TIME).asText();
+            }
         }catch (Exception ignored){
 
         }
-        Long fin = System.currentTimeMillis();
-        String processingTime = "";
-        if(responseCode==200){
-            InputStream input = conexion.getInputStream();
-            String responseBody = new String(input.readAllBytes(), StandardCharsets.UTF_8);
-            input.close();
-            JsonNode jsonResponse = mapper.readTree(responseBody);
-            processingTime = jsonResponse.get(Constantes.TIME).asText();
-        }
+
         return new String[]{String.valueOf(responseCode), String.valueOf(fin), processingTime};
     }
 
