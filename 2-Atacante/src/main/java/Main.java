@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         String filePath = generateFilePath();
         ExperimentoMasivo experimentoMasivo = new ExperimentoMasivo(Constantes.DURATION_2, Constantes.IMAGE_SUFFIX[0], 2,
-                10qº);
+                10);
         try (FileWriter writer = new FileWriter(filePath)) {
             experimentoMasivo.ejecutar(writer);
         } catch (Exception e) {

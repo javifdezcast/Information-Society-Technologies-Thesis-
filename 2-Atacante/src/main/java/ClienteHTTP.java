@@ -44,7 +44,7 @@ public class ClienteHTTP implements Cliente {
             result[2] = resultado[1];
             result[3] = resultado[2];
         }catch(IOException e){
-            e.printStackTrace();
+
         }
         return result;
     }
@@ -87,12 +87,12 @@ public class ClienteHTTP implements Cliente {
         con.setRequestProperty(Constantes.IMAGE_WIDTH, String.valueOf(image.getWidth()));
         con.setRequestProperty(Constantes.IMAGE_HEIGHT, String.valueOf(image.getHeight()));
         con.setRequestProperty(Constantes.CONTENT_TYPE, "application/json");
-        con.setConnectTimeout(180*1000);
-        con.setReadTimeout(180*1000);
+        con.setConnectTimeout(10*1000);
+        con.setReadTimeout(10*1000);
         this.conexion = con;
     }
 
-    private static HttpURLConnection createConnection(String url, String method) throws IOException {
+    public static HttpURLConnection createConnection(String url, String method) throws IOException {
         URL urlObject = new URL(url);
         HttpURLConnection con = (HttpURLConnection) urlObject.openConnection();
         con.setRequestMethod(method);
@@ -100,18 +100,4 @@ public class ClienteHTTP implements Cliente {
         return con;
     }
 
-    @Override
-    public void unblockFirewall() throws IOException {
-        HttpURLConnection con = createConnection(Constantes.URL_FIREWALL, "POST");
-
-        try (OutputStream stream = con.getOutputStream()) {
-            stream.write(new byte[0]);
-            stream.flush();
-        }
-
-        int responseCode = con.getResponseCode();
-        if (responseCode != HttpURLConnection.HTTP_OK) {
-            throw new IOException("Failed to unblock firewall: " + responseCode);
-        }
-    }
 }

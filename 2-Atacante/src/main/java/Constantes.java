@@ -3,7 +3,7 @@ public class Constantes {
     /**
      * Constantes de conexión
      */
-    public static String VICTIM_IP ="192.168.1.44";
+    public static String VICTIM_IP ="192.168.1.36";
     public static String URL_FUNCION = "http://" + VICTIM_IP + ":8080/function/reducirimagen";
     public static String URL_FIREWALL = "http://" + VICTIM_IP + ":5000/unblock";
 
@@ -26,7 +26,7 @@ public class Constantes {
     public static String[] IMAGE_SUFFIX = {".jpg", ".png"};
     public static String RES_FILEPATH = "C:\\Users\\jfdez.DESKTOP-2BOORBB.000\\Information-Society-Technologies-Thesis-" +
             "\\ReducirImagen\\Atacante\\src\\main\\java\\resultados\\";
-    public static int[] INSTANCE_COUNTS = {30, 30, 20, 30, 30, 15, 15, 15, 15, 10, 10};
+    public static int[] INSTANCE_COUNTS = {30, 30, 10, 30, 30, 15, 15, 15, 15, 10, 10};
 
     /**
      * Constantes experimento preliminar 1
