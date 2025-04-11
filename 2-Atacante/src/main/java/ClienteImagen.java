@@ -30,8 +30,9 @@ public class ClienteImagen extends ClienteHTTP {
 
     @Override
     public String[] solicitudRespuesta() {
+
         ObjectNode node = super.getMapper().createObjectNode();
-        node.put("imagen", this.imagen);
+        node.put("image", this.byteImage);
 
         String[] result = {"","","",""};
         try{

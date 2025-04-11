@@ -18,7 +18,7 @@ public class TraficoBase {
                 cliente.solicitudRespuesta();
                 Thread.sleep(10 * 1000);
             }catch (Exception ignored){
-                
+
             }
         }
     }
