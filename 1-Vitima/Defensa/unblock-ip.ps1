@@ -3,18 +3,21 @@ param(
 )
 
 if (-not $ip) {
-    Write-Host "No IP address provided."
     exit 1
 }
 
-$ruleName = "Blocked IP - $ip"
+$ruleNameInbound = "Blocked-$ip-inbound"
+$ruleNameOutbound = "Blocked-$ip-outbound"
 
 # Check if rule exists
-$existingRule = Get-NetFirewallRule -DisplayName $ruleName -ErrorAction SilentlyContinue
-if ($existingRule) {
+$existingRuleInbound = Get-NetFirewallRule -DisplayName $ruleNameInbound -ErrorAction SilentlyContinue
+$existingRuleOutnbound = Get-NetFirewallRule -DisplayName $ruleNameOutbound -ErrorAction SilentlyContinue
+
+if (existingRuleInbound) {
     # Remove the firewall rule
-    Remove-NetFirewallRule -DisplayName $ruleName
-    Write-Host "Unblocked IP: $ip"
-} else {
-    Write-Host "No existing rule found for IP: $ip"
-}
+    Remove-NetFirewallRule -DisplayName $ruleNameInbound
+} 
+if (existingRuleOutnbound) {
+    # Remove the firewall rule
+    Remove-NetFirewallRule -DisplayName $ruleNameOutbound
+} 

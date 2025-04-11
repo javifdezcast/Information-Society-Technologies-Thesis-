@@ -19,7 +19,13 @@ public class AtacanteMasivoTemporal implements IAtacante {
     private final String iteracion;
 
     public AtacanteMasivoTemporal(String tamanio, String formato, long inicio, long fin, String iteracion) {
-        this.cliente = new ClienteHTTP(Constantes.IMAGE_PREFIX + tamanio + formato);
+        Cliente cliente1 = null;
+        try {
+            cliente1 = new ClienteImagen(Constantes.IMAGE_PREFIX + tamanio + formato);
+        }catch (Exception ignored){
+
+        }
+        this.cliente = cliente1;
         this.id = new Random().nextInt(999999);
         this.tamanio = tamanio;
         this.formato = formato;

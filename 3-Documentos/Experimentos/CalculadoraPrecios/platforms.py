@@ -1,7 +1,7 @@
 class AWS():
 	def __init__(self):
-		self.freeRequests = 1000000
-		self.freeCompute = 400000
+		self.freeRequests = 0
+		self.freeCompute = 0
 
 		
 
@@ -44,16 +44,17 @@ class AWS():
 
 		price = compPrice + reqPrice + apiPrice
 
-		return "--------AWS---------\nTotal Cost - $"+str(price)+"\nNumber of requests - "+str(requests)+"\nTotal Compute - "+str(compute)+"GBs"
+		#return "--------AWS---------\nTotal Cost - $"+str(price)+"  Number of requests - "+str(requests)+"  Total Compute - "+str(compute)+"GBs"
+		return price
 
 
 
 
 class Google():
 	def __init__(self):
-		self.freeRequests = 2000000
-		self.freeCompute = 400000
-		self.freeComputeCPU = 200000
+		self.freeRequests = 0
+		self.freeCompute = 0
+		self.freeComputeCPU = 0
 		self.freeEgress = 5
 
 		self.COMPUTE_PRICE = 0.0000025
@@ -114,13 +115,14 @@ class Google():
 
 		price = compPrice + reqPrice + compCPUPrice
 
-		return "--------Google---------\nTotal Cost - $"+str(price)+"\nNumber of requests - "+str(requests)+"\nTotal Compute - "+str(compute)+"GBs"+"\nTotal CPU - "+str(computeCPU)+"GHzs"
+		#return "--------Google---------\nTotal Cost - $"+str(price)+"  Number of requests - "+str(requests)+"  Total Compute - "+str(compute)+"GBs"+"  Total CPU - "+str(computeCPU)+"GHzs"
+		return price
 
 
 class Azure():
 	def __init__(self):
-		self.freeRequests = 1000000
-		self.freeCompute = 400000
+		self.freeRequests = 0
+		self.freeCompute = 0
 		
 		
 		self.COMPUTE_PRICE = 0.000016
@@ -153,13 +155,13 @@ class Azure():
 		
 		price = compPrice + reqPrice
 		
-		return "--------Azure---------\nTotal Cost - $"+str(price)+"\nNumber of requests - "+str(requests)+"\nTotal Compute - "+str(compute)+"GBs"
-
+		#return "--------Azure---------\nTotal Cost - $"+str(price)+"  Number of requests - "+str(requests)+"  Total Compute - "+str(compute)+"GBs"
+		return price
 
 class IBM():
 	def __init__(self):
 		
-		self.freeCompute = 400000
+		self.freeCompute = 0
 
 		
 
@@ -186,5 +188,5 @@ class IBM():
 
 		price = compPrice
 
-		return "--------IBM---------\nTotal Cost - $"+str(price)+"\nNumber of requests - "+str(requests)+"\nTotal Compute - "+str(compute)+"GBs"
-
+	#	return "--------IBM---------\nTotal Cost - $"+str(price)+" Number of requests - "+str(requests)+"  Total Compute - "+str(compute)+"GBs"
+		return price

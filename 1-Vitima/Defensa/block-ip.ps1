@@ -3,21 +3,23 @@ param(
 )
 
 if (-not $ip) {
-    Write-Host "No IP address provided."
     exit 1
 }
 
-$ruleName = "Blocked IP - $ip"
+$ruleNameInbound = "Blocked-$ip-inbound"
+$ruleNameOutbound = "Blocked-$ip-outbound"
 
 # Check if rule already exists
-$existingRule = Get-NetFirewallRule -DisplayName $ruleName -ErrorAction SilentlyContinue
+$existingRuleInbound = Get-NetFirewallRule -DisplayName $ruleNameInbound -ErrorAction SilentlyContinue
 if ($existingRule) {
-    Write-Host "IP $ip is already blocked."
     exit 0
+}
+$existingRuleOutbound = Get-NetFirewallRule -DisplayName $ruleNameOutbound -ErrorAction SilentlyContinue
+if ($existingRule) {
+    exit 1
 }
 
 # Block the IP (Inbound & Outbound)
-New-NetFirewallRule -DisplayName $ruleName -Direction Inbound -Action Block -RemoteAddress $ip
-New-NetFirewallRule -DisplayName $ruleName -Direction Outbound -Action Block -RemoteAddress $ip
+New-NetFirewallRule -DisplayName $ruleNameInbound -Direction Inbound -Action Block -RemoteAddress $ip -LocalPort 8080 -Protocol TCP
+New-NetFirewallRule -DisplayName $ruleNameOutbound -Direction Outbound -Action Block -RemoteAddress $ip -LocalPort 8080 -Protocol TCP
 
-Write-Host "Blocked IP: $ip"
