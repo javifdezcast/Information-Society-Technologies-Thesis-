@@ -10,6 +10,7 @@ import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Base64;
 
 public class ClienteImagen extends ClienteHTTP {
 
@@ -18,7 +19,7 @@ public class ClienteImagen extends ClienteHTTP {
     private String imagen;
 
     public ClienteImagen(String imagen) throws IOException {
-        super(Constantes.URL_FUNCION, Constantes.POST);
+        super(Constantes.URL_FUNCION);
         try {
             this.byteImage = Files.readAllBytes(Paths.get(imagen));
             this.image = ImageIO.read(new File(imagen));
@@ -31,7 +32,7 @@ public class ClienteImagen extends ClienteHTTP {
     @Override
     public String[] solicitudRespuesta() {
         ObjectNode node = super.getMapper().createObjectNode();
-        node.put("imagen", this.imagen);
+        node.put("image", byteImage);
 
         String[] result = {"","","",""};
         try{
@@ -42,7 +43,7 @@ public class ClienteImagen extends ClienteHTTP {
             result[2] = resultado[1];
             result[3] = resultado[2];
         }catch(IOException e){
-
+            e.printStackTrace();
         }
         return result;
     }

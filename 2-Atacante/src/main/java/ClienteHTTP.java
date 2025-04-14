@@ -9,24 +9,23 @@ import java.nio.charset.StandardCharsets;
 public abstract class ClienteHTTP implements Cliente {
     private HttpURLConnection conexion;
     private ObjectMapper mapper;
+    private String url;
 
-    public ClienteHTTP(String URL, String method) throws IOException {
-        try {
-            this.conexion = createConnection(URL, method);
-            this.mapper = new ObjectMapper();
-        }catch (IOException e){
-            e.printStackTrace();
-        }
+    public ClienteHTTP(String URL) throws IOException {
+        this.mapper = new ObjectMapper();
+        this.url = URL;
     }
 
 
     public abstract String[] solicitudRespuesta();
 
     protected Long enviarSolicitud(ObjectNode node) throws IOException {
+        this.conexion = createConnection(this.url, Constantes.POST);
         OutputStream stream = conexion.getOutputStream();
         Long inicio = System.currentTimeMillis();
         stream.write(node.toString().getBytes(StandardCharsets.UTF_8));
         stream.flush();
+        stream.close();
         return inicio;
     }
 

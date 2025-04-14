@@ -14,7 +14,7 @@ public class ClienteFirewall extends ClienteHTTP{
     public long unblockTime;
 
     public ClienteFirewall() throws IOException {
-        super(Constantes.URL_FIREWALL, Constantes.POST);
+        super(Constantes.URL_FIREWALL);
     }
 
     @Override
