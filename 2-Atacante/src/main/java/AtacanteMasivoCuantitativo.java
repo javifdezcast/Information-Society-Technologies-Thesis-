@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -9,8 +10,8 @@ public class AtacanteMasivoCuantitativo implements IAtacante {
     private final int id;
     private final int solicitudes;
 
-    public AtacanteMasivoCuantitativo(String tamanio, String formato, int solicitudes) {
-        this.cliente = new ClienteHTTP(Constantes.IMAGE_PREFIX + tamanio + formato);
+    public AtacanteMasivoCuantitativo(String tamanio, String formato, int solicitudes) throws IOException {
+        this.cliente = new ClienteImagen(Constantes.IMAGE_PREFIX + tamanio + formato);
         this.id = new Random().nextInt(999999);
         this.tamanio = tamanio;
         this.formato = formato;

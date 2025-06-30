@@ -44,9 +44,10 @@ public class ExperimentoMasivo implements Experimento {
             System.out.println("Iteracion " + j + " comientza a las " + formatterTime.format(actualStart));
             writer.append(String.valueOf(size)).append(";")
                     .append(format).append(";").append(actualStart.format(formatterTime)).append("\n").flush();
-            cliente.setUnblockTime(endTime);
-            String[] respuesta = cliente.solicitudRespuesta();
-            System.out.println("Iteracion " + j + " firewall responde " + respuesta[0]);
+//            cliente.setUnblockTime(endTime);
+//            String[] respuesta = cliente.solicitudRespuesta();
+//
+            
             executeAttack(startTime, endTime, i);
         }
     }

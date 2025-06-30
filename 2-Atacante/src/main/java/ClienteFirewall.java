@@ -14,7 +14,7 @@ public class ClienteFirewall extends ClienteHTTP{
     public long unblockTime;
 
     public ClienteFirewall() throws IOException {
-        super(Constantes.URL_FIREWALL, Constantes.POST);
+        super(Constantes.URL_FIREWALL);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ClienteFirewall extends ClienteHTTP{
         }catch(IOException e){
             e.printStackTrace();
         }
-        return new String[0];
+        return result;
     }
 
     private String[] procesarRespuesta() throws IOException {

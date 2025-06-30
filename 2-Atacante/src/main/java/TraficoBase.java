@@ -1,7 +1,7 @@
 public class TraficoBase {
     Cliente cliente;
 
-    public TraficoBase(Cliente cliente) {
+    public TraficoBase() {
         Cliente cliente1 = null;
         try {
             cliente1 = new ClienteImagen(Constantes.IMAGE_PREFIX + String.valueOf(2)
@@ -13,12 +13,15 @@ public class TraficoBase {
     }
 
     public void generaTrafico(long tiempo) {
+        int i = 0;
         while(System.currentTimeMillis() < tiempo){
             try {
-                cliente.solicitudRespuesta();
+                String[] res = cliente.solicitudRespuesta();
+                i++;
+                System.out.println("Solicitud " + i + ": " + res[0]);
                 Thread.sleep(10 * 1000);
-            }catch (Exception ignored){
-
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
     }

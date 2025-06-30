@@ -3,7 +3,7 @@ public class Constantes {
     /**
      * Constantes de conexión
      */
-    public static String VICTIM_IP ="192.168.1.36";
+    public static String VICTIM_IP ="192.168.1.44";
     public static String URL_FUNCION = "http://" + VICTIM_IP + ":8080/function/reducirimagen";
     public static String URL_FIREWALL = "http://" + VICTIM_IP + ":5000/unblock";
 
@@ -14,7 +14,7 @@ public class Constantes {
     public static String IMAGE_SIZE = "IMAGE_SIZE";
     public static String IMAGE_HEIGHT = "IMAGE_HEIGHT";
     public static String IMAGE_WIDTH = "IMAGE_WIDTH";
-    public static String CONTENT_TYPE = "CONTENT_TYPE";
+    public static String CONTENT_TYPE = "Content-Type";
     public static String TIME = "time";
     public static String POST = "POST";
 
