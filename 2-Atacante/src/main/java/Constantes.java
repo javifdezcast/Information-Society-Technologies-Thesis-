@@ -46,4 +46,10 @@ public class Constantes {
     public static int DURATION_2 = 15 * 60 * 1000; // 3 minutes in milliseconds
     public static String RES_MASSIVO_FILEPATH = "C:\\Users\\jfdez\\Information-Society-Technologies-Thesis-\\3-Documentos\\Experimentos\\Experimento 3 Ataque Masivo\\";
 
+    /**
+     * Constantes experimento 1: ataque masivo
+     */
+    public static int DURATION_3 = 60 * 60 * 1000; // 3 minutes in milliseconds
+    public static String RES_LEECH_FILEPATH = "C:\\Users\\jfdez\\Information-Society-Technologies-Thesis-\\3-Documentos\\Experimentos\\Experimento 4 Ataque Leech\\";
+
 }

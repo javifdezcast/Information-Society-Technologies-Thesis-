@@ -10,10 +10,10 @@ public class Main {
 
     public static void main(String[] args) {
         String filePath = generateFilePath();
-        ExperimentoMasivo experimentoMasivo = new ExperimentoMasivo(Constantes.DURATION_2, Constantes.IMAGE_SUFFIX[0], 2,
+        ExpermientoLeech expermientoLeech = new ExpermientoLeech(Constantes.DURATION_3, Constantes.IMAGE_SUFFIX[0], 2,
                 10);
         try (FileWriter writer = new FileWriter(filePath)) {
-            experimentoMasivo.ejecutar(writer);
+            expermientoLeech.ejecutar(writer);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -25,7 +25,7 @@ public class Main {
     private static String generateFilePath() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm");
-        return Constantes.RES_MASSIVO_FILEPATH + "Resultados" + now.format(formatter) + ".csv";
+        return Constantes.RES_LEECH_FILEPATH + "Resultados" + now.format(formatter) + ".csv";
     }
 
 }
