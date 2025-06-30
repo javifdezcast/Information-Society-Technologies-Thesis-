@@ -33,7 +33,7 @@ public class ClienteFirewall extends ClienteHTTP{
         }catch(IOException e){
             e.printStackTrace();
         }
-        return new String[0];
+        return result;
     }
 
     private String[] procesarRespuesta() throws IOException {

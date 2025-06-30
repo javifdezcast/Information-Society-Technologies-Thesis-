@@ -14,7 +14,7 @@ public class Constantes {
     public static String IMAGE_SIZE = "IMAGE_SIZE";
     public static String IMAGE_HEIGHT = "IMAGE_HEIGHT";
     public static String IMAGE_WIDTH = "IMAGE_WIDTH";
-    public static String CONTENT_TYPE = "CONTENT_TYPE";
+    public static String CONTENT_TYPE = "Content-Type";
     public static String TIME = "time";
     public static String POST = "POST";
 
