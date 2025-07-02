@@ -44,20 +44,25 @@ public class ExpermientoLeech implements Experimento {
             LocalDateTime actualStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(startTime), TimeZone
                     .getDefault().toZoneId());
 
-            System.out.println("Iteracion " + j + " comientza a las " + formatterTime.format(actualStart));
+            System.out.print    ( "\nIteracion " + j + " comientza a las " + formatterTime.format(actualStart) +----------------------- "\n"    );
             writer.append(String.valueOf(size)).append(";")
                     .append(format).append(";").append(actualStart.format(formatterTime)).append("\n").flush();
+/*
             clienteFW.setUnblockTime(endTime);
             String[] respuesta = clienteFW.solicitudRespuesta();
             System.out.println("Iteracion " + j + " firewall responde " + respuesta[0]);
+*/
             executeAttack(endTime);
         }
     }
 
     private void executeAttack(long endTime) {
         Random random = new Random();
+        int i = 0;
         while(System.currentTimeMillis() < endTime) {
             clienteHTTP.solicitudRespuesta();
+            System.out.print( i + ", ");
+            i++;
             float sleep = random.nextFloat() * 30 + 30;
             try {
                 Thread.sleep((long) sleep*1000);
