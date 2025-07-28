@@ -40,7 +40,7 @@ public class ClienteImagen extends ClienteHTTP {
             Long inicio = enviarSolicitud(node);
             String[] resultado = procesarRespuesta();
             result[0] = resultado[0];
-            result[1] = String.valueOf(inicio);
+            resu3lt[1] = String.valueOf(inicio);
             result[2] = resultado[1];
             result[3] = resultado[2];
         }catch(IOException e){

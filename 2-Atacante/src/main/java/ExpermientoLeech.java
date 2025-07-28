@@ -44,7 +44,7 @@ public class ExpermientoLeech implements Experimento {
             LocalDateTime actualStart = LocalDateTime.ofInstant(Instant.ofEpochMilli(startTime), TimeZone
                     .getDefault().toZoneId());
 
-            System.out.print    ( "\nIteracion " + j + " comientza a las " + formatterTime.format(actualStart) +----------------------- "\n"    );
+            System.out.print    ( "\nIteracion " + j + " comientza a las " + formatterTime.format(actualStart) + "\n");
             writer.append(String.valueOf(size)).append(";")
                     .append(format).append(";").append(actualStart.format(formatterTime)).append("\n").flush();
 /*
