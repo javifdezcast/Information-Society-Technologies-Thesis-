@@ -11,11 +11,11 @@ $ruleNameOutbound = "Blocked-$ip-outbound"
 
 # Check if rule already exists
 $existingRuleInbound = Get-NetFirewallRule -DisplayName $ruleNameInbound -ErrorAction SilentlyContinue
-if ($existingRule) {
+if ($existingRuleInbound) {
     exit 0
 }
 $existingRuleOutbound = Get-NetFirewallRule -DisplayName $ruleNameOutbound -ErrorAction SilentlyContinue
-if ($existingRule) {
+if ($existingRuleOutbound) {
     exit 1
 }
 

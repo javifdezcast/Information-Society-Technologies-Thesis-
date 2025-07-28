@@ -1,0 +1,47 @@
+Figura 1: Arquitectura de los contenedores pag 12
+Figura 2: Arquitectura de las máquinas virtuales pag 12
+Figura 3: Tipos de servicios cloud según el dominio de las capas pag 12
+Figura 4: Flujo de las solicitudes en OpenFaaS pag 14
+Figura 5: Flujo de la metodología pag 24
+Figura 6: Formato de las solicitudes HTTP pag 26
+Figura 7: Configuración de despliegue de la función pag 27
+Figura 8: Panel de estatus de la función pag 27
+Figura 9: Panel de monitorización del nodo kubernetes pag 28
+Figura 10: Arquitectura de los servicios del dispositivo víctima pag 29
+Figura 11: Diagrama de clases del atacante pag 30
+Figura 12: Arquitectura de la red pag 32
+Figura 13: Tiempo de procesamiento en función del tamaño de la imagen en formato PNG pag 33
+Figura 13: Tiempo de procesamiento en función del tamaño de la imagen en formato JPG pag 34
+Figura 15: Replicas de la función durante el procesamiento de imágenes de distintos tamaños en formato JPG. pag 37
+Figura 16: Replicas de la función durante el procesamiento de imágenes de distintos tamaños en formato PNG. pag 37
+Figura 17: Consumo de CPU por réplica durante el procesamiento de imágenes en formato JPG. pag 38
+Figura 18: Consumo de CPU por réplica durante el procesamiento de imágenes en formato PNG. pag 39
+Figura 19: Consumo de memoria por réplica durante el procesamiento de imágenes en formato JPG. pag 40
+Figura 20: Consumo de memoria por réplica durante el procesamiento de imágenes en formato PNG. pag 40
+Figura 21: Tiempo medio de respuesta durante el procesamiento de imágenes en formato JPG. pag 41
+Figura 22: Tiempo medio de respuesta durante el procesamiento de imágenes en formato PNG. pag 41
+Figura 23: Réplicas de la función durante la ejecución de un ataque masivo pag 44
+Figura 24: Numero de invocaciones recibidas en los últimos 10s. pag 45
+Figura 25: Tiempo medio de procesamiento de las solicitudes pag 45
+Figura 26: Consumo de CPU por réplica de la función durante el ataque masivo pag 46
+Figura 27: Consumo de CPU por réplica de la función durante el ataque masivo pag 47
+Figura 28: Configuración de la alerta y el webhook
+Figura 29: Arquitectura de los servicios de la víctima con defensa pag 49
+Figura 30: Replicas de la función durante el ataque masivo con defensa pag 50
+Figura 31: Tasa de invocación de la función durante el ataque masivo con defensa pag 50
+Figura 32: Tiempo medio de procesamiento durante el ataque masivo con defensa pag 51
+Figura 33: Consumo de CPU durante el ataque masivo con defensa pag 52
+Figura 34: Consumo de memoria durante el ataque masivo con defensa pag 52
+Figura 35: Réplicas de la función durante la ejecución del ataquelLeech pag 56
+Figura 36: Tasa de invocación durante la ejecución del ataque leech pag 57
+Figura 37: Invocaciones recibidas en los últimos 10 minutos durante la ejecución del ataque leech pag 57
+Figura 38: Tiempo de procesamiento durante la ejecución del ataque leech pag 58
+Figura 39: Consumo de CPU durante la ejecución del ataque leech pag 58
+Figura 40: Consumo de memoria durante la ejecución del ataque leech pag 59
+Figura 40: Comparación de tráfico base y malicioso, y umbral escogido. pag 60
+Figura 41: Réplicas durante la ejecución del ataque leech con defensa pag 61
+Figura 42: Tiempo de procesamiento durante la ejecución del ataque leech con defensa pag 62
+Figura 44: Numero de invocaciones recibidas en los últimos 10 minutos durante la ejecución del ataque leech con defensa pag 63
+Figura 45: Tiempo medio de procesamiento durante la ejecución del ataque leech con defensa pag 63
+Figura 46: Consumo de CPU durante la ejecución del ataque leech con defensa pag 64
+Figura 47: Consumo de memoria durante la ejecución del ataque leech con defensa pag 65

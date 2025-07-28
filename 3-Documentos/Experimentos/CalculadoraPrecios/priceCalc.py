@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 import platforms
 
 def calcula_precios(timestamp):
-    end = int(timestamp) + 900
+    end = int(timestamp) + 3600
     expression1 = "http://" + IP + ":3000/api/datasources/proxy/1/api/v1/query_range?query=scalar(%20sum(%20gateway_function_invocation_total%20%7B%20%20code%3D%22200%22%7D%20))&start=" + timestamp + "&end=" + str(end) + "&step=" + step + "".format(
         int(time.time()))
     expression2 = "http://" + IP + ":3000/api/datasources/proxy/1/api/v1/query_range?query=scalar(%20sum(%20gateway_functions_seconds_sum%20))&start=" + timestamp + "&end=" + str(end) + "&step=" + step + "".format(
@@ -27,6 +27,8 @@ def calcula_precios(timestamp):
     out = res.json()
     # out = replace_nan_with_zero(out)
     compute = float(out["data"]["result"][0]["values"][0][1]) * 1000
+
+    print("" + str(request) + "," + str(compute))
 
     AWS = platform1.calculatePrice(request, compute, 128)
     Google = platform2.calculatePrice(request, compute, 128)
@@ -50,22 +52,14 @@ platform2 = platforms.Google()
 platform3 = platforms.Azure()
 platform4 = platforms.IBM()
 
-IP = "192.168.1.34"
+IP = "192.168.1.40"
 user = "admin"
 password = "GrafanaTFG2025"
-start = "1744059060"
-end = "1744059960"
 step = "1"
 
-iteraciones = ["07/04/2025 20:51:00",
-    "07/04/2025 21:06:00",
-    "07/04/2025 21:21:00",
-    "07/04/2025 21:36:00",
-    "07/04/2025 21:51:00",
-    "07/04/2025 22:06:00",
-    "07/04/2025 22:21:00",
-    "07/04/2025 22:36:00",
-    "07/04/2025 22:51:00"]
+iteraciones = [
+    "01/07/2025 12:48:00",
+    "09/07/2025 00:15:00"]
 
 print("AWS,Google,Azure,IMB")
 for iteracion in iteraciones:
